@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import colours from './colourScheme'
 
 const Footer = styled.footer`
-	background: ${colours.darkPrimaryBackground};
+	background-color: ${colours.accentBackground};
   display: -webkit-flex;
   display: flex;
   flex-flow: row wrap;

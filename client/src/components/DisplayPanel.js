@@ -16,7 +16,7 @@ const DisplayPanel = props => {
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
     border-bottom: 1px solid #bbb;
-    background: ${colours.lightPrimaryBackground};
+    background-color: ${colours.lightPrimaryBackground};
     text-align: left;
   `
 

@@ -7,21 +7,32 @@ import spdzlogo from './spdz_logo.svg'
 import './components/globalCSS'
 import AppBanner from './components/AppBanner'
 import AppFooter from './components/AppFooter'
+import Layout from './pages/layout'
 import DisplayPanel from './components/DisplayPanel'
 
 class App extends Component {
   render() {
+    const genPanel = header => {
+      return <DisplayPanel heading={header}>
+        <div>Some content Second line.</div>
+        <div>More content Second line.</div>
+      </DisplayPanel>
+    }
+
+
     return (
-      <div className="App">
+      <div>
 
         <AppBanner spdzLogo={spdzlogo} />
 
-        <div style={{ width: '50%', margin: '1em' }}>
-          <DisplayPanel heading={'Server x schema'}>
-            <div>Some content Second line.</div>
-            <div>More content Second line.</div>
-          </DisplayPanel>
-        </div>
+        <Layout style={{ margin: '1em' }}
+          schema1={genPanel('Schema from acmebank.com')}
+          schema2={genPanel('Schema from acmeinsurance.com')}
+          analyticFunc={genPanel('Choose the analytic function')}
+          query1={genPanel('Query for acmebank.com')}
+          query2={genPanel('Query for acmebank.com')}
+          results={genPanel('Results')}
+        />
 
         <AppFooter uobLogo={uoblogo} cryptoLogo={cryptologo} />
 

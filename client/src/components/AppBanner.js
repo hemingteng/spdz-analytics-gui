@@ -9,7 +9,7 @@ const SpdzLogo = styled.img`
 `
 
 const Banner = styled.div`
-	background: ${colours.darkPrimaryBackground};
+	background-color: ${colours.darkPrimaryBackground};
   padding: 20px 15px 5px 15px;
   color: white;
 `
@@ -24,7 +24,7 @@ const BannerHeader = styled.h4`
 
 const AppBanner = props => {
   return (
-    <Banner className="dark-primary-color  App-header">
+    <Banner>
       <a title="Bristol Crypt Group SPDZ software" href="https://www.cs.bris.ac.uk/Research/CryptographySecurity/SPDZ/">
         <SpdzLogo src={props.spdzLogo} alt="SPDZ logo" />
       </a>
