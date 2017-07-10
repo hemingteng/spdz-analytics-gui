@@ -12,54 +12,47 @@ const Layout = props => {
     margin-bottom: 1rem;
   `
 
+  const GridLayout = styled(Grid) `
+    padding: 0px 2px;
+    margin: 1rem 1rem 0 1rem;
+  `
+
   return (
-    <Grid fluid={true} style={{ padding: '0px 2px', margin: '1rem 1rem 0 1rem' }}>
+    <GridLayout fluid={true}>
       <Row>
-        <Col md={4}>
-          <DivWithMargin>
-            {props.schema1}
-          </DivWithMargin>
-        </Col>
-        <Col md={4}>
+        <Col md={12}>
           <DivWithMargin>
             {props.analyticFunc}
           </DivWithMargin>
         </Col>
-        <Col md={4}>
-          <DivWithMargin>
-            {props.schema2}
-          </DivWithMargin>
-        </Col>
       </Row>
       <Row>
-        <Col md={6}>
+        <Col md={6} style={{ paddingRight: '0' }}>
           <DivWithMargin>
-            {props.query1}
+            {props.party1}
           </DivWithMargin>
         </Col>
         <Col md={6}>
           <DivWithMargin>
-            {props.query2}
+            {props.party2}
           </DivWithMargin>
         </Col>
       </Row>
       <Row>
-        <Col md={6} mdOffset={3}>
+        <Col md={12}>
           <DivWithMargin>
             {props.results}
           </DivWithMargin>
         </Col>
       </Row>
-    </Grid>
+    </GridLayout>
   )
 }
 
 Layout.propTypes = {
-  schema1: PropTypes.element.isRequired,
-  schema2: PropTypes.element.isRequired,
+  party1: PropTypes.element.isRequired,
+  party2: PropTypes.element.isRequired,
   analyticFunc: PropTypes.element.isRequired,
-  query1: PropTypes.element.isRequired,
-  query2: PropTypes.element.isRequired,
   results: PropTypes.element.isRequired
 }
 

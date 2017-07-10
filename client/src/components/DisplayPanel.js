@@ -5,7 +5,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import styled from 'styled-components'
-import colours from './colourScheme'
+import colours from '../lib/colourScheme'
 
 const DisplayPanel = props => {
 
@@ -15,24 +15,25 @@ const DisplayPanel = props => {
     border-top: 1px solid #ddd;
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
-    border-bottom: 1px solid #bbb;
-    background-color: ${colours.lightPrimaryBackground};
+    border-bottom: 0px;
+    background-color: #fff;
     text-align: left;
   `
 
   const PanelText = styled.h4`
     font-size: 16px;
     padding-left: 0;
-    color: ${colours.primaryTextColor};
+    color: ${colours.darkPrimaryBackground};
   `
 
   const StyledPanel = styled.div`
+    background-color: #fff;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     border-radius: 0 0 3px 3px;
     margin: 0px;
-    padding: 6px;
+    padding: 6px 6px 10px 6px;
   `
 
   return (

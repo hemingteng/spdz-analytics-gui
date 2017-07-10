@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import colours from './colourScheme'
+import colours from '../lib/colourScheme'
 
 const SpdzLogo = styled.img`
   height: 40px;
