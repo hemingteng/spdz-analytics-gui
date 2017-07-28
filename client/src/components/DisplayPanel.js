@@ -23,6 +23,7 @@ const DisplayPanel = props => {
   const PanelText = styled.h4`
     font-size: 16px;
     padding-left: 0;
+    margin-bottom: 5px;
     color: ${colours.darkPrimaryBackground};
   `
 
