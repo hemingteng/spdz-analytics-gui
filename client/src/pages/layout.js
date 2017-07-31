@@ -17,6 +17,10 @@ const Layout = props => {
     margin: 1rem 1rem 0 1rem;
   `
 
+  const ColNoPad = styled(Col) `
+    padding-right: 0;
+  `
+
   return (
     <GridLayout fluid={true}>
       <Row>
@@ -27,11 +31,11 @@ const Layout = props => {
         </Col>
       </Row>
       <Row>
-        <Col md={6} style={{ paddingRight: '0' }}>
+        <ColNoPad md={6}>
           <DivWithMargin>
             {props.party1}
           </DivWithMargin>
-        </Col>
+        </ColNoPad>
         <Col md={6}>
           <DivWithMargin>
             {props.party2}

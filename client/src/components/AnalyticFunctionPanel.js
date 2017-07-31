@@ -1,28 +1,16 @@
-import React, { Component } from 'react'
+/**
+ * Panel to display the list of available analytic functions and allow one to be selected. 
+ * All read only.
+ */
+import React from 'react'
+import PropTypes from 'prop-types'
 import { Grid, Row, Col } from 'react-bootstrap'
 import styled from 'styled-components'
 
 import DisplayPanel from './DisplayPanel'
 
-const exampleInputs = {
-  avg: {
-    name: 'Average',
-    description: 'Calculate avg as ∑ value / number of values.',
-    example: 'select sum(col_1), count(col_1) from table_name where col2 > 1000',
-    inputs: [
-      { name: 'valueSum', type: 'int', byteSize: 4 },
-      { name: 'valueCount', type: 'int', byteSize: 4 }
-    ],
-    inputRowCount: 1,
-    outputs: [
-      { name: 'result', type: 'float', byteSize: 16 }
-    ],
-    outputRowCount: 1
-  }
-}
-
 /**
- * A lot of code to allow the list entry to be selected.
+ * A component (and a lot of code) to allow the function name list entry to be selected.
  */
 const SelectableFunc = props => {
   const FuncLine = styled.li`
@@ -36,7 +24,7 @@ const SelectableFunc = props => {
 
   const toggleSelected = (event) => {
     event.stopPropagation()
-    props.changeSelected(props.index, !props.selected)
+    props.changeSelected(props.functionName, !props.selected)
   }
 
   const selectedStyle = () =>
@@ -47,83 +35,164 @@ const SelectableFunc = props => {
   )
 }
 
-class AnalyticFunctionPanel extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selectedFunction: ''
-    }
-    this.changeSelected = this.changeSelected.bind(this)
-  }
+const AnalyticFunctionPanel = props => {
 
-  changeSelected = (index, selected) => {
-    this.setState({ selectedFunction: (selected ? index : undefined) })
-  }
-
-  render() {
-    const GridLayout = styled(Grid) `
+  const GridLayout = styled(Grid) `
       padding: 0px 2px;
       margin: 3px 3 0 3;
     `
-    const FuncList = styled.ul`
+  const ColNoPad = styled(Col) `
+      padding-right: 0;
+    `
+  const UlFuncList = styled.ul`
       border: 1px solid #ccc;
       padding: 0px 1px 2px 1px;
     `
-    const DivFuncDetail = styled.div`
+  const DivFuncDetail = styled.div`
       border: 1px solid #ccc;
       padding: 0px 1px 2px 1px;
       text-align: left;
     `
+  const TableMain = styled.table` 
+      width: 100%; 
+      border-collapse: collapse; 
+    `
+  const TdMain = styled.td`
+      padding: 6px;
+      border: none;
+      text-align: left;
+    `
+  const TdMainSub = TdMain.extend`
+      padding: 0;
+    `
+  const TdDetail = TdMain.extend`
+      padding: 0 0 0 6px;
+    `
+  const TdLabel = styled.td`
+      color: #888;
+      width: 8em;
+      text-align: right;
+      vertical-align: top;
+      padding: 6px;
+      padding-right: 1em;       
+      border: none;
+    `
+  const DivFuncExample = DivFuncDetail.extend`
+      padding: 6px;
+    `
+  const PQueryLabel = styled.p`
+      color: #888;    
+    `
+  const ThLabel = TdLabel.extend`
+      text-align:left;
+    `
+  const CodeStyled = styled.code`
+      white-space: pre-wrap;
+      margin: 0;
+      width: 100%;
+    `
 
-    // table { 
-    //   width: 100%; 
-    //   border-collapse: collapse; 
-    // }
-    // /* Zebra striping */
-    // tr:nth-of-type(odd) { 
-    //   background: #eee; 
-    // }
-    // th { 
-    //   background: #333; 
-    //   color: white; 
-    //   font-weight: bold; 
-    // }
-    // td, th { 
-    //   padding: 6px; 
-    //   border: 1px solid #ccc; 
-    //   text-align: left; 
-    // }
-
-    const isSelected = index => {
-      if (this.state === undefined) {
-        return false
-      } else {
-        return this.state.selectedFunction === index
-      }
+  const isSelected = name => {
+    if (props.selectedFunction === undefined) {
+      return false
+    } else {
+      return props.selectedFunction.name === name
     }
+  }
 
-    return <DisplayPanel heading={'Choose the analytic function'}>
+  const selectableFunctionNames = props.functionNames.map(name =>
+    <SelectableFunc key={name} selected={isSelected(name)} functionName={name} changeSelected={props.chooseFunction} />
+  )
+
+  const ioRows = (func, prop) => {
+    if (func !== undefined) {
+      return func[prop].map((input, index) =>
+        <tr key={index}>
+          <TdDetail>{input.name}</TdDetail>
+          <TdDetail>{input.type}</TdDetail>
+          <TdDetail>{input.byteSize}</TdDetail>
+        </tr>
+      )
+    } else {
+      return <tr>
+        <TdDetail>-</TdDetail>
+        <TdDetail>-</TdDetail>
+        <TdDetail>-</TdDetail>
+      </tr>
+    }
+  }
+
+  return (
+    <DisplayPanel heading={'Choose the analytic function'}>
       <GridLayout fluid={true}>
         <Row>
-          <Col md={2}>
-            <FuncList>
-              <SelectableFunc key={0} index={0} selected={isSelected(0)} functionName={'Average'} changeSelected={this.changeSelected} />
-              <SelectableFunc key={1} index={1} selected={isSelected(1)} functionName={'Percentage Histogram'} changeSelected={this.changeSelected} />
-            </FuncList>
-          </Col>
-          <Col md={10}>
+          <ColNoPad md={2}>
+            <UlFuncList>
+              {selectableFunctionNames}
+            </UlFuncList>
+          </ColNoPad>
+          <ColNoPad md={5}>
             <DivFuncDetail>
-              <dl>
-                <div><dt>Description:</dt><dd>'Calculate avg as ∑ value / number of values.'</dd></div>
-                <div><dt>Inputs:</dt><dd><table></table></dd></div>
-              </dl>
-              Second col content
+              <TableMain>
+                <tbody>
+                  <tr>
+                    <TdLabel>Description:</TdLabel>
+                    <TdMain>{props.selectedFunction !== undefined ? props.selectedFunction.description : '-'}</TdMain>
+                  </tr>
+                  <tr>
+                    <TdLabel>Inputs:</TdLabel>
+                    <TdMainSub>
+                      <TableMain>
+                        <thead>
+                          <tr>
+                            <ThLabel>Name</ThLabel>
+                            <ThLabel>Type</ThLabel>
+                            <ThLabel>Byte Size</ThLabel>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {ioRows(props.selectedFunction, 'inputs')}
+                        </tbody>
+                      </TableMain>
+                    </TdMainSub>
+                  </tr>
+                  <tr>
+                    <TdLabel>Outputs:</TdLabel>
+                    <TdMainSub>
+                      <TableMain>
+                        <thead>
+                          <tr>
+                            <ThLabel>Name</ThLabel>
+                            <ThLabel>Type</ThLabel>
+                            <ThLabel>Byte Size</ThLabel>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {ioRows(props.selectedFunction, 'outputs')}
+                        </tbody>
+                      </TableMain>
+                    </TdMainSub>
+                  </tr>
+                </tbody>
+              </TableMain>
             </DivFuncDetail>
+          </ColNoPad>
+          <Col md={5}>
+            <DivFuncExample>
+              <PQueryLabel>Example query:</PQueryLabel>
+              <CodeStyled>{props.selectedFunction !== undefined ? props.selectedFunction.example : 'Select an analytic function.'}</CodeStyled>
+            </DivFuncExample>
           </Col>
         </Row>
       </GridLayout>
     </DisplayPanel>
-  }
+  )
+}
+
+AnalyticFunctionPanel.propTypes = {
+  functionNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedFunction: PropTypes.object,
+  chooseFunction: PropTypes.func.isRequired
 }
 
 export default AnalyticFunctionPanel

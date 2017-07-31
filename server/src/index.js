@@ -1,5 +1,5 @@
 /**
- * Run a web server to serve the SPDZ gui and a REST endpoint to get gui config at run time.
+ * Run a web server to serve the analytics gui and a REST endpoint to get analytics engine config at run time.
  * Expect to be run behind an nginx reverse proxy in prod to provide SSL.
  */
 'use strict'

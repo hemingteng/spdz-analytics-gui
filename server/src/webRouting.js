@@ -4,10 +4,16 @@
 const compression = require('compression')
 const express = require('express')
 const path = require('path')
+const analyticConfig = require('../config/analyticConfig')
 
 const environ = process.env.NODE_ENV || 'development'
 
 module.exports = (app) => {
+  // REST endpoints come first
+  app.get('/analytics/engineConfig', (req, res) => {
+    res.json(analyticConfig)
+  })
+
   // Serve GUI from bundled production build files if not in development.
   if (environ !== 'development') {
     app.use(compression())
