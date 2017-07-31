@@ -10,7 +10,7 @@ const environ = process.env.NODE_ENV || 'development'
 
 module.exports = (app) => {
   // REST endpoints come first
-  app.get('/analytics/engineConfig', (req, res) => {
+  app.get('/analyticsgui/engineConfig', (req, res) => {
     res.json(analyticConfig)
   })
 

@@ -6,6 +6,8 @@ import Layout from './Layout'
 import AnalyticFunctionPanel from '../components/AnalyticFunctionPanel'
 import QueryPanel from '../components/QueryPanel'
 import ResultsPanel from '../components/ResultsPanel'
+import { getAnalyticConfig } from '../lib/guiApi'
+import { getAnalyticFunctions } from '../lib/analyticApi'
 
 const functions = [
   {
@@ -47,7 +49,8 @@ class ContainerLayout extends Component {
     this.state = {
       analyticFunctions: [],
       selectedFunction: undefined,
-      analyticEngineArray: []
+      analyticEngines: [],
+      analyticEngineApi: '/analyticsapi'
     }
     this.chooseAnalyticFunction = this.chooseAnalyticFunction.bind(this)
   }
@@ -56,11 +59,21 @@ class ContainerLayout extends Component {
    * At startup get array of analytic engine urls.
    */
   componentDidMount() {
-    //TODO getAnalyticEngineConfig
-    this.setState({ analyticEngineArray: [] })
-
-    //TODO getAnalyticFunctions (but which analytic engine?? - get both and compare.)
-    this.setState({ analyticFunctions: functions })
+    getAnalyticConfig('/analyticsgui/engineConfig')
+      .then((json) => {
+        this.setState({ analyticEngines: json.analyticList })
+        this.setState({ analyticEngineApi: json.analyticApiRoot })
+        return json.analyticList
+      })
+      .then((analyticEngines) => {
+        return getAnalyticFunctions(analyticEngines)
+      })
+      .then((json) => {
+        this.setState({ analyticFunctions: json })
+      })
+      .catch((ex) => {
+        console.log(ex)
+      })
   }
 
   chooseAnalyticFunction = (funcName, selected) => {
