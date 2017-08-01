@@ -13,7 +13,7 @@ import AppFooter from './components/AppFooter'
 class App extends Component {
   render() {
     const DivBody = styled.div`
-      background-color: #F5F5F5;
+      background-color: #e5e5e5;
     `
     return (
       <DivBody>

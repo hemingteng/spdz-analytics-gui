@@ -36,4 +36,25 @@ const getAnalyticFunctions = (urlList, api) => {
   }
 }
 
-export { getAnalyticFunctions }
+const getEngineSchema = (url, api) => {
+  return fetch(url + api + '/schema',
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      },
+      mode: 'cors'
+    })
+    .then(parseIfJson)
+    .then((result) => {
+      if (result.response.ok) {
+        return Promise.resolve(result.jsonData)
+      } else {
+        let error = new Error(`Unable to read schema. Status: ${result.response.status}.`)
+        error.reason = result.jsonData
+        return Promise.reject(error)
+      }
+    })
+}
+
+export { getAnalyticFunctions, getEngineSchema }
