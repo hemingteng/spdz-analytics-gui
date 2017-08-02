@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Schema table display renders as expected Renders as expected 1`] = `
+<div
+  className="sc-bwzfXH nZQrh"
+>
+  <table
+    className="sc-htpNat doQarc"
+  >
+    <caption
+      className="sc-bxivhb lfgMfN"
+    >
+      testTable
+    </caption>
+    <tbody>
+      <tr>
+        <td
+          className="sc-ifAKCX ilGcAf"
+        >
+          id
+        </td>
+        <td
+          className="sc-ifAKCX ilGcAf"
+        >
+          int
+           
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="sc-ifAKCX ilGcAf"
+        >
+          amount
+        </td>
+        <td
+          className="sc-ifAKCX ilGcAf"
+        >
+          int
+           
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="sc-ifAKCX ilGcAf"
+        >
+          ipAddress
+        </td>
+        <td
+          className="sc-ifAKCX ilGcAf"
+        >
+          int
+           
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="sc-ifAKCX ilGcAf"
+        >
+          incidentDate
+        </td>
+        <td
+          className="sc-ifAKCX ilGcAf"
+        >
+          datetime
+           
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

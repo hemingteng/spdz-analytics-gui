@@ -8,14 +8,16 @@ import { Grid, Row, Col } from 'react-bootstrap'
 import styled from 'styled-components'
 
 import DisplayPanel from './DisplayPanel'
+import { DisplayBox, codeFont } from './BaseStyles'
 
 /**
  * A component (and a lot of code) to allow the function name list entry to be selected.
+ * Should use form select tag.
  */
 const SelectableFunc = props => {
   const FuncLine = styled.li`
     list-style-type: none;
-    &:hover {color: #e85a32};
+    &:hover {color: firebrick};
     margin-top: 2px;
     margin-bottom: 0px;
     padding-left: 4px;
@@ -23,8 +25,9 @@ const SelectableFunc = props => {
   `
 
   const toggleSelected = (event) => {
-    event.stopPropagation()
     props.changeSelected(props.functionName, !props.selected)
+    event.preventDefault()
+    event.stopPropagation()
   }
 
   const selectedStyle = () =>
@@ -46,12 +49,11 @@ const AnalyticFunctionPanel = props => {
     `
   const UlFuncList = styled.ul`
       border: 1px solid #ccc;
+      border-radius: 4px;
       padding: 0px 1px 2px 1px;
     `
-  const DivFuncDetail = styled.div`
-      border: 1px solid #ccc;
+  const DivFuncDetail = DisplayBox.extend`
       padding: 0px 1px 2px 1px;
-      text-align: left;
     `
   const TableMain = styled.table` 
       width: 100%; 
@@ -61,6 +63,9 @@ const AnalyticFunctionPanel = props => {
       padding: 6px;
       border: none;
       text-align: left;
+      font-family: ${codeFont.fontFamily};
+      font-size: ${codeFont.fontSize};
+      color: ${codeFont.color};
     `
   const TdMainSub = TdMain.extend`
       padding: 0;
@@ -90,6 +95,9 @@ const AnalyticFunctionPanel = props => {
       white-space: pre-wrap;
       margin: 0;
       width: 100%;
+      font-family: ${codeFont.fontFamily};
+      font-size: ${codeFont.fontSize};
+      color: ${codeFont.color};
     `
 
   const isSelected = name => {

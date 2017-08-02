@@ -14,9 +14,9 @@ class ContainerLayout extends Component {
     super(props)
     this.state = {
       analyticFunctions: [],
-      selectedFunction: undefined,
       analyticEngines: [],
-      analyticEngineApi: undefined
+      analyticEngineApi: undefined,
+      selectedFunction: undefined
     }
     this.chooseAnalyticFunction = this.chooseAnalyticFunction.bind(this)
   }

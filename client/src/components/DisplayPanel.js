@@ -7,27 +7,25 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import colours from '../lib/colourScheme'
 
-const DisplayPanel = props => {
-
-  const PanelHeader = styled.div`
+const PanelHeader = styled.div`
     padding: 2px 8px;
     border-radius: 3px 3px 0 0;
-    border-top: 1px solid #ddd;
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
     border-bottom: 0px;
     background-color: #fff;
     text-align: left;
   `
 
-  const PanelText = styled.h4`
+const PanelText = styled.h4`
     font-size: 16px;
     padding-left: 0;
     margin-bottom: 5px;
     color: ${colours.darkPrimaryBackground};
   `
 
-  const StyledPanel = styled.div`
+const StyledPanel = styled.div`
     background-color: #fff;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
@@ -37,6 +35,7 @@ const DisplayPanel = props => {
     padding: 6px 6px 10px 6px;
   `
 
+const DisplayPanel = props => {
   return (
     <div>
       <PanelHeader>

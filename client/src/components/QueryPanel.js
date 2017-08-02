@@ -7,45 +7,29 @@ import styled from 'styled-components'
 
 import DisplayPanel from './DisplayPanel'
 import { getEngineSchema } from '../lib/analyticApi'
+import SchemaTableDisplay from './SchemaTableDisplay'
+import { codeFont } from './BaseStyles'
 
-class QueryPanel extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      schema: {}
-    }
-    this.readSchema = this.readSchema.bind(this)
-  }
-
-  /**
-   * At startup try to get schema from analytic engine.
-   */
-  componentDidMount() {
-    this.readSchema()
-  }
-
-  readSchema() {
-    if (this.props.engineURL !== undefined && this.props.engineAPI !== undefined) {
-      getEngineSchema(this.props.engineURL, this.props.engineAPI)
-        .then((json) => {
-          this.setState({ schema: json })
-        })
-        .catch((ex) => {
-          console.log(ex)
-        })
-    }
-  }
-
-  render() {
-    const PreSchema = styled.pre`
-      white-space: pre-wrap;
+const DivTableLayout = styled.div`
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: flex-start;
+      align-items: top;
+      margin-bottom: 10px;
     `
 
-    // influenced by from react bootstrap styling
-    const TextAreaSchema = styled.textarea`
-      height: 6em;
+const DivTablePadding = styled.div`
+      &:nth-child(n+2) {
+        padding-left: 8px;
+      }
+    `
+
+// influenced by react bootstrap styling
+const TextAreaSchema = styled.textarea`
+      height: 8em;
       padding: 6px 12px;
-      color: #555;
+      font-family: ${codeFont.fontFamily};
+      font-size: ${codeFont.fontSize};
       width: 100%;
       border: 1px solid #ccc;
       border-radius: 4px;
@@ -57,15 +41,63 @@ class QueryPanel extends Component {
       };
     `
 
+class QueryPanel extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      schema: [{ tableName: 'No tables retrieved', columns: {} }],
+      query: ''
+    }
+    this.handleChange = this.handleChange.bind(this)
+  }
+
+  componentDidMount() {
+    if (this.props.engineURL !== undefined && this.props.engineAPI !== undefined) {
+      getEngineSchema(this.props.engineURL, this.props.engineAPI)
+        .then((json) => {
+          this.setState({ schema: json })
+        })
+        .catch((ex) => {
+          console.log(ex)
+        })
+    }
+  }
+
+  componentDidUpdate() {
+    // this.textArea.focus()
+  }
+
+  handleChange(event) {
+    this.setState({ query: event.target.value })
+    event.preventDefault()
+    event.stopPropagation()
+  }
+
+  render() {
     const analyticEngineName = (url) =>
       url !== undefined ?
         `Query for ${url.replace(/^https?:\/\//i, '')}` :
         'Awaiting connection details...'
 
-    return <DisplayPanel heading={analyticEngineName(this.props.engineURL)}>
-      <PreSchema>{JSON.stringify(this.state.schema)}</PreSchema>
-      <TextAreaSchema placeholder="Enter SQL query ..." />
-    </DisplayPanel>
+    const displaySchemaTables = schema => {
+      return schema.map(table =>
+        <DivTablePadding key={table.tableName} >
+          <SchemaTableDisplay tableName={table.tableName} colNames={table.columns} />
+        </DivTablePadding>
+      )
+    }
+
+    return (
+      <DisplayPanel heading={analyticEngineName(this.props.engineURL)}>
+        <DivTableLayout>
+          {displaySchemaTables(this.state.schema)}
+        </DivTableLayout>
+        <TextAreaSchema value={this.state.query}
+          onChange={this.handleChange}
+          innerRef={(textarea) => { this.textArea = textarea }}
+          placeholder="Enter SQL query ..." />
+      </DisplayPanel>
+    )
   }
 }
 
