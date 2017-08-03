@@ -49,26 +49,40 @@ class QueryPanel extends Component {
       query: ''
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleBlur = this.handleBlur.bind(this)
+    this.getSchema = this.getSchema.bind(this)
   }
 
   componentDidMount() {
     if (this.props.engineURL !== undefined && this.props.engineAPI !== undefined) {
-      getEngineSchema(this.props.engineURL, this.props.engineAPI)
-        .then((json) => {
-          this.setState({ schema: json })
-        })
-        .catch((ex) => {
-          console.log(ex)
-        })
+      this.getSchema(this.props.engineURL, this.props.engineAPI)
     }
   }
 
-  componentDidUpdate() {
-    // this.textArea.focus()
+  componentWillReceiveProps(nextProps) {
+    if (this.props.engineURL !== undefined && this.props.engineAPI !== undefined) {
+      this.getSchema(this.props.engineURL, this.props.engineAPI)
+    }
+  }
+
+  getSchema(url, api) {
+    getEngineSchema(this.props.engineURL, this.props.engineAPI)
+      .then((json) => {
+        this.setState({ schema: json })
+      })
+      .catch((ex) => {
+        console.log(ex)
+      })
   }
 
   handleChange(event) {
     this.setState({ query: event.target.value })
+    event.preventDefault()
+    event.stopPropagation()
+  }
+
+  handleBlur(event) {
+    this.props.storeQuery(event.target.value)
     event.preventDefault()
     event.stopPropagation()
   }
@@ -94,6 +108,7 @@ class QueryPanel extends Component {
         </DivTableLayout>
         <TextAreaSchema value={this.state.query}
           onChange={this.handleChange}
+          onBlur={this.handleBlur}
           innerRef={(textarea) => { this.textArea = textarea }}
           placeholder="Enter SQL query ..." />
       </DisplayPanel>
@@ -103,7 +118,8 @@ class QueryPanel extends Component {
 
 QueryPanel.propTypes = {
   engineURL: PropTypes.string,
-  engineAPI: PropTypes.string
+  engineAPI: PropTypes.string,
+  storeQuery: PropTypes.func.isRequired
 }
 
 export default QueryPanel

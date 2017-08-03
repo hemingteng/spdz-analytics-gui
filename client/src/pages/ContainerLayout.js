@@ -16,9 +16,12 @@ class ContainerLayout extends Component {
       analyticFunctions: [],
       analyticEngines: [],
       analyticEngineApi: undefined,
-      selectedFunction: undefined
+      selectedFunction: undefined,
+      sqlQuery0: undefined,
+      sqlQuery1: undefined
     }
     this.chooseAnalyticFunction = this.chooseAnalyticFunction.bind(this)
+    this.storeSQLQuery = this.storeSQLQuery.bind(this)
   }
 
   /**
@@ -41,6 +44,11 @@ class ContainerLayout extends Component {
       })
   }
 
+  storeSQLQuery(party, query) {
+    console.log('store query ', party, query)
+    party === 0 ? this.setState({ sqlQuery0: query }) : this.setState({ sqlQuery1: query })
+  }
+
   chooseAnalyticFunction = (funcName, selected) => {
     const selectedFunc = selected ? this.state.analyticFunctions.find(func => func.name === funcName) : undefined
     this.setState({ selectedFunction: selectedFunc })
@@ -51,6 +59,8 @@ class ContainerLayout extends Component {
     const analyticEngineURL = index =>
       this.state.analyticEngines.length > index ?
         this.state.analyticEngines[index] : undefined
+    const getSelectedFunctionId = () =>
+      this.state.selectedFunction !== undefined ? this.state.selectedFunction.id : undefined
 
     return (
       <Layout style={{ margin: '1em' }}
@@ -60,11 +70,16 @@ class ContainerLayout extends Component {
           chooseFunction={this.chooseAnalyticFunction} />}
         party1={<QueryPanel
           engineURL={analyticEngineURL(0)}
-          engineAPI={this.state.analyticEngineApi} />}
+          engineAPI={this.state.analyticEngineApi}
+          storeQuery={query => this.storeSQLQuery(0, query)} />}
         party2={<QueryPanel
           engineURL={analyticEngineURL(1)}
-          engineAPI={this.state.analyticEngineApi} />}
-        results={<ResultsPanel />}
+          engineAPI={this.state.analyticEngineApi}
+          storeQuery={query => this.storeSQLQuery(1, query)} />}
+        results={<ResultsPanel 
+          selectedFunctionId={getSelectedFunctionId()}
+          query1={this.state.query1}
+          query2={this.state.query1} />}
       />
     )
   }

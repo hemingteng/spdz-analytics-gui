@@ -36,10 +36,18 @@ const StyledPanel = styled.div`
   `
 
 const DisplayPanel = props => {
+  const deriveHeader = () => {
+    if (typeof props.heading === 'string' || props.heading instanceof String) {
+      return <PanelText>{props.heading}</PanelText>
+    } else {
+      return props.heading
+    }
+  }
+
   return (
     <div>
       <PanelHeader>
-        <PanelText>{props.heading}</PanelText>
+        {deriveHeader()}
       </PanelHeader>
 
       <StyledPanel>
@@ -50,7 +58,10 @@ const DisplayPanel = props => {
 }
 
 DisplayPanel.propTypes = {
-  heading: PropTypes.string.isRequired
+  heading: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object
+  ]).isRequired
 }
 
 export default DisplayPanel
