@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import DisplayPanel from './DisplayPanel'
-import { getEngineSchema } from '../lib/analyticApi'
+import { getEngineSchema } from '../lib/analyticRestApi'
 import SchemaTableDisplay from './SchemaTableDisplay'
 import { codeFont } from './BaseStyles'
 

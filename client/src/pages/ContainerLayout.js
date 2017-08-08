@@ -7,7 +7,7 @@ import AnalyticFunctionPanel from '../components/AnalyticFunctionPanel'
 import QueryPanel from '../components/QueryPanel'
 import ResultsPanel from '../components/ResultsPanel'
 import { getAnalyticConfig } from '../lib/guiApi'
-import { getAnalyticFunctions } from '../lib/analyticApi'
+import { getAnalyticFunctions } from '../lib/analyticRestApi'
 
 class ContainerLayout extends Component {
   constructor(props) {
@@ -45,7 +45,6 @@ class ContainerLayout extends Component {
   }
 
   storeSQLQuery(party, query) {
-    console.log('store query ', party, query)
     party === 0 ? this.setState({ sqlQuery0: query }) : this.setState({ sqlQuery1: query })
   }
 
@@ -76,10 +75,11 @@ class ContainerLayout extends Component {
           engineURL={analyticEngineURL(1)}
           engineAPI={this.state.analyticEngineApi}
           storeQuery={query => this.storeSQLQuery(1, query)} />}
-        results={<ResultsPanel 
+        results={<ResultsPanel
+          engineURLs={this.state.analyticEngines}
           selectedFunctionId={getSelectedFunctionId()}
-          query1={this.state.query1}
-          query2={this.state.query1} />}
+          query1={this.state.sqlQuery0}
+          query2={this.state.sqlQuery1} />}
       />
     )
   }
