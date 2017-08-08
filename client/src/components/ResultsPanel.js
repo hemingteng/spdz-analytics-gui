@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import DisplayPanel from './DisplayPanel'
 import { DisplayBox } from './BaseStyles'
 import colours from '../lib/colourScheme'
-import { connectAnalyticEngines } from '../lib/analyticSocketApi'
+import { connectAnalyticEngines, sendDBQuery } from '../lib/analyticSocketApi'
 import { arraysEqual } from '../lib/utils'
 
 
@@ -71,6 +71,7 @@ class ResultsPanel extends Component {
     }
     this.connectWebSocket = this.connectWebSocket.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.addStatusMessage = this.addStatusMessage.bind(this)
   }
 
   componentDidMount() {
@@ -86,13 +87,32 @@ class ResultsPanel extends Component {
   connectWebSocket(engineURLs) {
     if (engineURLs.length > 0) {
       connectAnalyticEngines(engineURLs,
-        (engineStatus) => this.setState({ enginesBusy: engineStatus }))
+        (engineStatus) => {
+          this.setState({ enginesBusy: engineStatus })
+        },
+        (statusMsg) => {
+          this.addStatusMessage(statusMsg.msg, statusMsg.status, statusMsg.serverName)
+        })
     }
   }
 
   handleSubmit(event) {
-    console.log('TODO submit query')
+    try {
+      const msg = sendDBQuery(this.props.selectedFunctionId, this.props.query1, this.props.query2)
+      this.addStatusMessage(msg, 'info')
+    } catch (err) {
+      this.addStatusMessage(err.message, 'danger')
+    }
     event.preventDefault()
+  }
+
+  addStatusMessage(msg, status, serverName = undefined) {
+    this.setState((prevState, props) => {
+      return {
+        progressMessages: prevState.progressMessages.concat(
+          [{ msg: msg, status: status, serverName: serverName }])
+      }
+    })
   }
 
   render() {
@@ -102,7 +122,7 @@ class ResultsPanel extends Component {
       }
 
       if (this.state.enginesBusy) {
-        return <PInfo>'Analytic engines are busy.'</PInfo>
+        return <PInfo>Analytic engines are busy.</PInfo>
       }
 
       let status = 'Analytic engines are ready to run a query.'
@@ -142,15 +162,27 @@ class ResultsPanel extends Component {
         </DivPadding>
       </DivHeading>
 
+    const displayProgress = (log, index) => {
+      const msg = log.msg + (log.serverName !== undefined ? ` Sent by ${log.serverName}.` : '')
+      if (log.status === 'info') {
+        return <PInfo key={index}>{msg}</PInfo>
+      } else if (log.status === 'warn') {
+        return <PWarn key={index}>{msg}</PWarn>
+      } else if (log.status === 'danger') {
+        return <PDanger key={index}>{msg}</PDanger>
+      } else if (log.status === 'success') {
+        return <PSuccess key={index}>{msg}</PSuccess>
+      } else {
+        return <PStatusMsg key={index}>{msg}</PStatusMsg>
+      }
+    }
+
     const formatProgressMessages = (msgs) => {
       if (msgs.length === 0) {
         return <PStatusMsg>No query has been submitted...</PStatusMsg>
       } else {
         return <div>
-          <PInfo>Info type message</PInfo>
-          <PWarn>Warn type message</PWarn>
-          <PDanger>Danger type message</PDanger>
-          <PSuccess>Success type message</PSuccess>
+          {msgs.map((msg, index) => displayProgress(msg, index))}
         </div>
       }
     }
