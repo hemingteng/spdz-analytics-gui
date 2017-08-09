@@ -6,7 +6,7 @@ import DisplayPanel from './DisplayPanel'
 import { DisplayBox } from './BaseStyles'
 import colours from '../lib/colourScheme'
 import { connectAnalyticEngines, sendDBQuery } from '../lib/analyticSocketApi'
-import { arraysEqual } from '../lib/utils'
+import { listOfArraysEqual } from '../lib/utils'
 
 
 const DivHeading = styled.div`
@@ -61,6 +61,13 @@ const DivPadding = styled.div`
   padding: 10px 8px 0px 10px;
 `
 
+const STATUS = {
+  GOOD: 0,
+  INFO: 1,
+  WARN: 2,
+  ERROR: 3
+}
+
 class ResultsPanel extends Component {
   constructor(props) {
     super(props)
@@ -79,7 +86,7 @@ class ResultsPanel extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!arraysEqual(this.props.engineURLs, nextProps.engineURLs)) {
+    if (!listOfArraysEqual([this.props.engineURLs, nextProps.engineURLs])) {
       this.connectWebSocket(nextProps.engineURLs)
     }
   }
@@ -92,16 +99,20 @@ class ResultsPanel extends Component {
         },
         (statusMsg) => {
           this.addStatusMessage(statusMsg.msg, statusMsg.status, statusMsg.serverName)
-        })
+        },
+        (results) => {
+          this.setState({ results: results })
+        }
+      )
     }
   }
 
   handleSubmit(event) {
     try {
       const msg = sendDBQuery(this.props.selectedFunctionId, this.props.query1, this.props.query2)
-      this.addStatusMessage(msg, 'info')
+      this.addStatusMessage(msg, STATUS.INFO)
     } catch (err) {
-      this.addStatusMessage(err.message, 'danger')
+      this.addStatusMessage(err.message, STATUS.ERROR)
     }
     event.preventDefault()
   }
@@ -164,13 +175,13 @@ class ResultsPanel extends Component {
 
     const displayProgress = (log, index) => {
       const msg = log.msg + (log.serverName !== undefined ? ` Sent by ${log.serverName}.` : '')
-      if (log.status === 'info') {
+      if (log.status === 1) {
         return <PInfo key={index}>{msg}</PInfo>
-      } else if (log.status === 'warn') {
+      } else if (log.status === 2) {
         return <PWarn key={index}>{msg}</PWarn>
-      } else if (log.status === 'danger') {
+      } else if (log.status === 3) {
         return <PDanger key={index}>{msg}</PDanger>
-      } else if (log.status === 'success') {
+      } else if (log.status === 0) {
         return <PSuccess key={index}>{msg}</PSuccess>
       } else {
         return <PStatusMsg key={index}>{msg}</PStatusMsg>
@@ -191,7 +202,8 @@ class ResultsPanel extends Component {
       if (results.length === 0) {
         return <PStatusMsg>No results to display...</PStatusMsg>
       } else {
-        // components to format different function results ?         
+        // components to format different function results ?                 
+        return <div>{results}</div>
       }
     }
 

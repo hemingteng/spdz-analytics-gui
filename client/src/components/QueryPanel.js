@@ -46,6 +46,7 @@ class QueryPanel extends Component {
     super(props)
     this.state = {
       schema: [{ tableName: 'No tables retrieved', columns: {} }],
+      friendlyName: '',
       query: ''
     }
     this.handleChange = this.handleChange.bind(this)
@@ -68,7 +69,7 @@ class QueryPanel extends Component {
   getSchema(url, api) {
     getEngineSchema(this.props.engineURL, this.props.engineAPI)
       .then((json) => {
-        this.setState({ schema: json })
+        this.setState({ schema: json.schema, friendlyName: json.friendlyName })
       })
       .catch((ex) => {
         console.log(ex)
@@ -90,7 +91,7 @@ class QueryPanel extends Component {
   render() {
     const analyticEngineName = (url) =>
       url !== undefined ?
-        `Query for ${url.replace(/^https?:\/\//i, '')}` :
+        `Query for ${url.replace(/^https?:\/\//i, '')} (${this.state.friendlyName})` :
         'Awaiting connection details...'
 
     const displaySchemaTables = schema => {
