@@ -1,5 +1,6 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
+import 'jest-styled-components'
 import SchemaTableDisplay from './SchemaTableDisplay'
 
 const testCols = { 'columns': { 'id': { 'type': 'int', 'maxLength': null }, 'amount': { 'type': 'int', 'maxLength': null }, 'ipAddress': { 'type': 'int', 'maxLength': null }, 'incidentDate': { 'type': 'datetime', 'maxLength': null } } }

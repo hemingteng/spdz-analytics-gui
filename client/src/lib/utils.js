@@ -30,5 +30,21 @@ const listOfArraysEqual = compareList => {
   }
 }
 
+const round = (number, precision) => {
+  var factor = Math.pow(10, precision)
+  var tempNumber = number * factor
+  var roundedTempNumber = Math.round(tempNumber)
+  return roundedTempNumber / factor
+}
 
-export { listOfArraysEqual }
+const extractYValues = (xyData, resultArray) => {
+  for (let i = 0; i < xyData.length / 2; i++) {
+    if (xyData[i * 2] > resultArray.length - 1) {
+      throw new Error(`Trying to map result value into array position ${xyData[i * 2]} which is longer than result array length ${resultArray.length}.`)
+    }
+    resultArray[xyData[i * 2]] = round(xyData[i * 2 + 1], 3)
+  }
+  return resultArray
+}
+
+export { extractYValues, listOfArraysEqual }

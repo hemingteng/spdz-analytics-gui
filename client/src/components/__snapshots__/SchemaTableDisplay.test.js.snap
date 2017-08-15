@@ -1,26 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Schema table display renders as expected Renders as expected 1`] = `
+.c0 {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: left;
+  padding: 0px 2px 4px 2px;
+}
+
+.c1 {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+  font-size: 12.6px;
+  color: #c7254e;
+}
+
+.c2 {
+  padding-left: 4px;
+}
+
+.c3 {
+  padding: 0 6px 0 6px;
+  border: none;
+  text-align: left;
+}
+
 <div
-  className="sc-bwzfXH nZQrh"
+  className="c0"
 >
   <table
-    className="sc-htpNat doQarc"
+    className="c1"
   >
     <caption
-      className="sc-bxivhb lfgMfN"
+      className="c2"
     >
       testTable
     </caption>
     <tbody>
       <tr>
         <td
-          className="sc-ifAKCX ilGcAf"
+          className="c3"
         >
           id
         </td>
         <td
-          className="sc-ifAKCX ilGcAf"
+          className="c3"
         >
           int
            
@@ -28,12 +54,12 @@ exports[`Schema table display renders as expected Renders as expected 1`] = `
       </tr>
       <tr>
         <td
-          className="sc-ifAKCX ilGcAf"
+          className="c3"
         >
           amount
         </td>
         <td
-          className="sc-ifAKCX ilGcAf"
+          className="c3"
         >
           int
            
@@ -41,12 +67,12 @@ exports[`Schema table display renders as expected Renders as expected 1`] = `
       </tr>
       <tr>
         <td
-          className="sc-ifAKCX ilGcAf"
+          className="c3"
         >
           ipAddress
         </td>
         <td
-          className="sc-ifAKCX ilGcAf"
+          className="c3"
         >
           int
            
@@ -54,12 +80,12 @@ exports[`Schema table display renders as expected Renders as expected 1`] = `
       </tr>
       <tr>
         <td
-          className="sc-ifAKCX ilGcAf"
+          className="c3"
         >
           incidentDate
         </td>
         <td
-          className="sc-ifAKCX ilGcAf"
+          className="c3"
         >
           datetime
            

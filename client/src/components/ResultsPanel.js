@@ -6,8 +6,9 @@ import DisplayPanel from './DisplayPanel'
 import { DisplayBox } from './BaseStyles'
 import colours from '../lib/colourScheme'
 import { connectAnalyticEngines, sendDBQuery } from '../lib/analyticSocketApi'
-import { listOfArraysEqual } from '../lib/utils'
-
+import { extractYValues, listOfArraysEqual } from '../lib/utils'
+import PercentHistogram from './PercentHistogram'
+import { PanelHeaderText } from './BaseStyles'
 
 const DivHeading = styled.div`
   display: flex;
@@ -38,7 +39,7 @@ const DivQueryStatus = DisplayBox.extend`
 const DivDisplayResults = DisplayBox.extend`
   padding: 6px;
   background-color: white;
-  height: 10em;
+  min-height: 10em;
 `
 // influenced by react bootstrap styling
 const SubmitButton = styled.button`
@@ -108,6 +109,8 @@ class ResultsPanel extends Component {
   }
 
   handleSubmit(event) {
+    this.setState({ progressMessages: [], results: [] })
+
     try {
       const msg = sendDBQuery(this.props.selectedFunctionId, this.props.query1, this.props.query2)
       this.addStatusMessage(msg, STATUS.INFO)
@@ -199,17 +202,30 @@ class ResultsPanel extends Component {
     }
 
     const formatResults = (results) => {
-      if (results.length === 0) {
-        return <PStatusMsg>No results to display...</PStatusMsg>
+      if (this.props.selectedFunctionId === 'phist') {
+
+        const emptyArray = new Array(24)
+        emptyArray.fill(0)
+        const results = extractYValues(this.state.results, emptyArray)
+
+        const heading = <PanelHeaderText>Distribution of cyber incidents by hour</PanelHeaderText>
+        return <PercentHistogram heading={heading} data={results} />
+      } else if (this.props.selectedFunctionId === 'avg') {
+        if (results.length === 0) {
+          return <PStatusMsg>No results to display...</PStatusMsg>
+        } else {
+          return <div>{results}</div>
+        }
       } else {
-        // components to format different function results ?                 
-        return <div>{results}</div>
+        return <PStatusMsg>No results to display...</PStatusMsg>
       }
     }
 
     return <DisplayPanel heading={headingComponent}>
       <DivQueryStatus>{formatProgressMessages(this.state.progressMessages)}</DivQueryStatus>
-      <DivDisplayResults>{formatResults(this.state.results)}</DivDisplayResults>
+      <DivDisplayResults>
+        {formatResults(this.state.results)}
+      </DivDisplayResults>
     </DisplayPanel>
   }
 }

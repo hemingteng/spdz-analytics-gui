@@ -5,7 +5,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import styled from 'styled-components'
-import colours from '../lib/colourScheme'
+import { PanelHeaderText } from './BaseStyles'
 
 const PanelHeader = styled.div`
     padding: 2px 8px;
@@ -16,13 +16,6 @@ const PanelHeader = styled.div`
     border-bottom: 0px;
     background-color: #fff;
     text-align: left;
-  `
-
-const PanelText = styled.h4`
-    font-size: 16px;
-    padding-left: 0;
-    margin-bottom: 5px;
-    color: ${colours.darkPrimaryBackground};
   `
 
 const StyledPanel = styled.div`
@@ -38,7 +31,7 @@ const StyledPanel = styled.div`
 const DisplayPanel = props => {
   const deriveHeader = () => {
     if (typeof props.heading === 'string' || props.heading instanceof String) {
-      return <PanelText>{props.heading}</PanelText>
+      return <PanelHeaderText>{props.heading}</PanelHeaderText>
     } else {
       return props.heading
     }
