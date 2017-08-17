@@ -36,7 +36,7 @@ describe('Util to manage extracting y values from array of xy values', () => {
   it('Successfully extracts 2 values out of 3', () => {
     const result = new Array(3)
     result.fill(0)
-    const input = [0, 0, 2, 22, 1, 11]
+    const input = [0, 0, 2, .22, 1, .11]
     expect(extractYValues(input, result)).toEqual([0, 11, 22])
   })
 
@@ -44,7 +44,7 @@ describe('Util to manage extracting y values from array of xy values', () => {
     const result = new Array(24)
     result.fill(0)
     const input = [21, 0.125, 16, 0.1240234375, 23, 0.375, 20, 0.125, 15, 0.25]
-    expect(extractYValues(input, result)).toEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.25, 0.124, 0, 0, 0, 0.125, 0.125, 0, 0.375])
+    expect(extractYValues(input, result)).toEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 12.4, 0, 0, 0, 12.5, 12.5, 0, 37.5])
   })
 
   it('Throws an error if index out of range', () => {

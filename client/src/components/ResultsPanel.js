@@ -204,9 +204,12 @@ class ResultsPanel extends Component {
     const formatResults = (results) => {
       if (this.props.selectedFunctionId === 'phist') {
 
-        const emptyArray = new Array(24)
-        emptyArray.fill(0)
-        const results = extractYValues(this.state.results, emptyArray)
+        let results = this.state.results
+        if (results.length > 0) {
+          const emptyArray = new Array(24)
+          emptyArray.fill(0)
+          results = extractYValues(this.state.results, emptyArray)
+        }
 
         const heading = <PanelHeaderText>Distribution of cyber incidents by hour</PanelHeaderText>
         return <PercentHistogram heading={heading} data={results} />
