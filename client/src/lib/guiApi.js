@@ -8,20 +8,22 @@ import { parseIfJson } from './restUtils'
  * @returns {Promise} resolve to json from server or reject with Error.
  */
 const getAnalyticConfig = url => {
-  return fetch(url,
-    {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      },
-      mode: 'same-origin'
-    })
+  return fetch(url, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json'
+    },
+    mode: 'same-origin'
+  })
     .then(parseIfJson)
-    .then((result) => {
+    .then(result => {
       if (result.response.ok) {
         return Promise.resolve(result.jsonData)
       } else {
-        let error = new Error(`Unable to read analytics GUI config. Status: ${result.response.status}.`)
+        let error = new Error(
+          `Unable to read analytics GUI config. Status: ${result.response
+            .status}.`
+        )
         error.reason = result.jsonData
         return Promise.reject(error)
       }

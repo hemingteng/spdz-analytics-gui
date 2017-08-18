@@ -5,24 +5,49 @@ import styled from 'styled-components'
 import { Bar } from 'react-chartjs-2'
 
 /* Needed to constrain canvas. */
-const SizeDiv = styled.div`
-  height: 250px;
-`
+const SizeDiv = styled.div`height: 250px;`
 
-const HeadingLayout = styled.div`
-  padding-bottom: 10px;
-`
+const HeadingLayout = styled.div`padding-bottom: 10px;`
 
 class PercentHistogram extends Component {
-
   shouldComponentUpdate(nextProps) {
-    console.log('shouldComponentUpdate ', nextProps.data !== this.props.data, JSON.stringify(nextProps.data))
-    return (nextProps.data !== this.props.data)
+    console.log(
+      'shouldComponentUpdate ',
+      nextProps.data !== this.props.data,
+      JSON.stringify(nextProps.data)
+    )
+    return nextProps.data !== this.props.data
   }
 
   render() {
-
-    const yLabels = { labels: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'] }
+    const yLabels = {
+      labels: [
+        '00',
+        '01',
+        '02',
+        '03',
+        '04',
+        '05',
+        '06',
+        '07',
+        '08',
+        '09',
+        '10',
+        '11',
+        '12',
+        '13',
+        '14',
+        '15',
+        '16',
+        '17',
+        '18',
+        '19',
+        '20',
+        '21',
+        '22',
+        '23'
+      ]
+    }
 
     const datasets = data => {
       const dataset = {
@@ -56,29 +81,37 @@ class PercentHistogram extends Component {
 
     const noDataChartOptions = {
       scales: {
-        yAxes: [{
-          scaleLabel: { labelString: '%', display: true },
-          ticks: { suggestedMin: 0, suggestedMax: 100 }
-        }],
-        xAxes: [{
-          scaleLabel: { labelString: 'hour', display: true }
-        }]
+        yAxes: [
+          {
+            scaleLabel: { labelString: '%', display: true },
+            ticks: { suggestedMin: 0, suggestedMax: 100 }
+          }
+        ],
+        xAxes: [
+          {
+            scaleLabel: { labelString: 'hour', display: true }
+          }
+        ]
       }
     }
 
     const withDataChartOptions = {
       scales: {
-        yAxes: [{
-          scaleLabel: { labelString: '%', display: true },
-          ticks: { suggestedMin: 0 }
-        }],
-        xAxes: [{
-          scaleLabel: { labelString: 'hour', display: true }
-        }]
+        yAxes: [
+          {
+            scaleLabel: { labelString: '%', display: true },
+            ticks: { suggestedMin: 0 }
+          }
+        ],
+        xAxes: [
+          {
+            scaleLabel: { labelString: 'hour', display: true }
+          }
+        ]
       }
     }
 
-    const options = (data) => {
+    const options = data => {
       if (data.length === 0) {
         return Object.assign({}, constChartOptions, noDataChartOptions)
       } else {
@@ -86,16 +119,18 @@ class PercentHistogram extends Component {
       }
     }
 
-    return <SizeDiv>
-      <HeadingLayout>
-        {this.props.heading}
-      </HeadingLayout>
-      <Bar
-        data={dataConfig(this.props.data)}
-        options={options(this.props.data)}
-        redraw={true}
-      />
-    </SizeDiv>
+    return (
+      <SizeDiv>
+        <HeadingLayout>
+          {this.props.heading}
+        </HeadingLayout>
+        <Bar
+          data={dataConfig(this.props.data)}
+          options={options(this.props.data)}
+          redraw={true}
+        />
+      </SizeDiv>
+    )
   }
 }
 

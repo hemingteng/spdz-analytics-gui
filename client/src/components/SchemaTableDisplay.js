@@ -7,32 +7,31 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { DisplayBox, codeFont } from './BaseStyles'
 
-const DivDBTable = DisplayBox.extend`
-    padding: 0px 2px 4px 2px;
-  `
-const TableSQL = styled.table` 
-    width: 100%; 
-    border-collapse: collapse;
-    font-family: ${codeFont.fontFamily};
-    font-size: ${codeFont.fontSize};
-    color: ${codeFont.color};
-  `
-const TableCaption = styled.caption`
-    padding-left: 4px;
-  `
+const DivDBTable = DisplayBox.extend`padding: 0px 2px 4px 2px;`
+const TableSQL = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  font-family: ${codeFont.fontFamily};
+  font-size: ${codeFont.fontSize};
+  color: ${codeFont.color};
+`
+const TableCaption = styled.caption`padding-left: 4px;`
 const TdCol = styled.td`
-    padding: 0 6px 0 6px;
-    border: none;
-    text-align: left;
-  `
+  padding: 0 6px 0 6px;
+  border: none;
+  text-align: left;
+`
 
 const SchemaTableDisplay = props => {
-
   const formatTableCols = colNames => {
     return Object.keys(colNames).map(colName =>
       <tr key={colName}>
-        <TdCol>{colName}</TdCol>
-        <TdCol>{colNames[colName].type} {colNames[colName].maxLength}</TdCol>
+        <TdCol>
+          {colName}
+        </TdCol>
+        <TdCol>
+          {colNames[colName].type} {colNames[colName].maxLength}
+        </TdCol>
       </tr>
     )
   }
@@ -40,7 +39,9 @@ const SchemaTableDisplay = props => {
   return (
     <DivDBTable>
       <TableSQL>
-        <TableCaption>{props.tableName}</TableCaption>
+        <TableCaption>
+          {props.tableName}
+        </TableCaption>
         <tbody>
           {formatTableCols(props.colNames)}
         </tbody>

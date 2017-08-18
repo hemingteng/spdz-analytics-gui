@@ -4,18 +4,26 @@
 var winston = require('winston')
 var moment = require('moment')
 
-var logger = new (winston.Logger)({
+var logger = new winston.Logger({
   transports: [
-    new (winston.transports.Console)({
+    new winston.transports.Console({
       handleExceptions: true,
       humanReadableUnhandledException: true,
-      timestamp: function () {
+      timestamp: function() {
         return moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
       },
-      formatter: function (options) {
+      formatter: function(options) {
         // Return string will be passed to logger.
-        return options.timestamp() + ' ' + options.level.toUpperCase() + ' ' + (options.message ? options.message : '') +
-          (options.meta && Object.keys(options.meta).length ? ' ' + JSON.stringify(options.meta) : '')
+        return (
+          options.timestamp() +
+          ' ' +
+          options.level.toUpperCase() +
+          ' ' +
+          (options.message ? options.message : '') +
+          (options.meta && Object.keys(options.meta).length
+            ? ' ' + JSON.stringify(options.meta)
+            : '')
+        )
       }
     })
   ]

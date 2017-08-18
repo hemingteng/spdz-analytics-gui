@@ -20,9 +20,8 @@ webRouting(app)
 
 // Configure web server
 const webServer = http.createServer(app)
-const guiPortNum = (environ === 'development') ? '3001' : '8080'
+const guiPortNum = environ === 'development' ? '3001' : '8080'
 
 webServer.listen(guiPortNum, () => {
   logger.info(`Serving GUI on port ${guiPortNum}.`)
 })
-

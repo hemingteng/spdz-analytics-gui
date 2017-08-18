@@ -11,35 +11,37 @@ import SchemaTableDisplay from './SchemaTableDisplay'
 import { codeFont } from './BaseStyles'
 
 const DivTableLayout = styled.div`
-      display: flex;
-      flex-flow: row wrap;
-      justify-content: flex-start;
-      align-items: top;
-      margin-bottom: 10px;
-    `
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: top;
+  margin-bottom: 10px;
+`
 
 const DivTablePadding = styled.div`
-      &:nth-child(n+2) {
-        padding-left: 8px;
-      }
-    `
+  &:nth-child(n + 2) {
+    padding-left: 8px;
+  }
+`
 
 // influenced by react bootstrap styling
 const TextAreaSchema = styled.textarea`
-      height: 8em;
-      padding: 6px 12px;
-      font-family: ${codeFont.fontFamily};
-      font-size: ${codeFont.fontSize};
-      width: 100%;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      &:focus {
-        border-color: #66afe9;
-        outline: 0;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-      };
-    `
+  height: 8em;
+  padding: 6px 12px;
+  font-family: ${codeFont.fontFamily};
+  font-size: ${codeFont.fontSize};
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  &:focus {
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075),
+      0 0 8px rgba(102, 175, 233, .6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075),
+      0 0 8px rgba(102, 175, 233, .6);
+  }
+`
 
 class QueryPanel extends Component {
   constructor(props) {
@@ -55,23 +57,29 @@ class QueryPanel extends Component {
   }
 
   componentDidMount() {
-    if (this.props.engineURL !== undefined && this.props.engineAPI !== undefined) {
+    if (
+      this.props.engineURL !== undefined &&
+      this.props.engineAPI !== undefined
+    ) {
       this.getSchema(this.props.engineURL, this.props.engineAPI)
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.engineURL !== undefined && this.props.engineAPI !== undefined) {
+    if (
+      this.props.engineURL !== undefined &&
+      this.props.engineAPI !== undefined
+    ) {
       this.getSchema(this.props.engineURL, this.props.engineAPI)
     }
   }
 
   getSchema(url, api) {
     getEngineSchema(this.props.engineURL, this.props.engineAPI)
-      .then((json) => {
+      .then(json => {
         this.setState({ schema: json.schema, friendlyName: json.friendlyName })
       })
-      .catch((ex) => {
+      .catch(ex => {
         console.log(ex)
       })
   }
@@ -89,15 +97,19 @@ class QueryPanel extends Component {
   }
 
   render() {
-    const analyticEngineName = (url) =>
-      url !== undefined ?
-        `Query for ${url.replace(/^https?:\/\//i, '')} (${this.state.friendlyName})` :
-        'Awaiting connection details...'
+    const analyticEngineName = url =>
+      url !== undefined
+        ? `Query for ${url.replace(/^https?:\/\//i, '')} (${this.state
+            .friendlyName})`
+        : 'Awaiting connection details...'
 
     const displaySchemaTables = schema => {
       return schema.map(table =>
-        <DivTablePadding key={table.tableName} >
-          <SchemaTableDisplay tableName={table.tableName} colNames={table.columns} />
+        <DivTablePadding key={table.tableName}>
+          <SchemaTableDisplay
+            tableName={table.tableName}
+            colNames={table.columns}
+          />
         </DivTablePadding>
       )
     }
@@ -107,11 +119,15 @@ class QueryPanel extends Component {
         <DivTableLayout>
           {displaySchemaTables(this.state.schema)}
         </DivTableLayout>
-        <TextAreaSchema value={this.state.query}
+        <TextAreaSchema
+          value={this.state.query}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
-          innerRef={(textarea) => { this.textArea = textarea }}
-          placeholder="Enter SQL query ..." />
+          innerRef={textarea => {
+            this.textArea = textarea
+          }}
+          placeholder="Enter SQL query ..."
+        />
       </DisplayPanel>
     )
   }

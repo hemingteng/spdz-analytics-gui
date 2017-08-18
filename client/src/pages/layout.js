@@ -6,14 +6,12 @@ import PropTypes from 'prop-types'
 import { Grid, Row, Col } from 'react-bootstrap'
 import styled from 'styled-components'
 
-const DivWithMargin = styled.div`
-  margin-bottom: 1rem;
-`
-const GridLayout = styled(Grid) `
+const DivWithMargin = styled.div`margin-bottom: 1rem;`
+const GridLayout = styled(Grid)`
   padding: 0px 2px;
   margin: 1rem 1rem 0 1rem;
 `
-const ColNoPad = styled(Col) `
+const ColNoPad = styled(Col)`
   padding-right: 0;
 `
 

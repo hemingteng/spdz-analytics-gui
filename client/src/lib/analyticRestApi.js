@@ -13,22 +13,26 @@ import { parseIfJson } from './restUtils'
  */
 const getAnalyticFunctions = (urlList, api) => {
   if (urlList.length === 0) {
-    return Promise.reject('No analytic engine URLs supplied, unable to read for analytic functions.')
+    return Promise.reject(
+      'No analytic engine URLs supplied, unable to read for analytic functions.'
+    )
   } else {
-    return fetch(urlList[0] + api + '/functions',
-      {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json'
-        },
-        mode: 'cors'
-      })
+    return fetch(urlList[0] + api + '/functions', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json'
+      },
+      mode: 'cors'
+    })
       .then(parseIfJson)
-      .then((result) => {
+      .then(result => {
         if (result.response.ok) {
           return Promise.resolve(result.jsonData)
         } else {
-          let error = new Error(`Unable to read analytics functions list. Status: ${result.response.status}.`)
+          let error = new Error(
+            `Unable to read analytics functions list. Status: ${result.response
+              .status}.`
+          )
           error.reason = result.jsonData
           return Promise.reject(error)
         }
@@ -37,20 +41,21 @@ const getAnalyticFunctions = (urlList, api) => {
 }
 
 const getEngineSchema = (url, api) => {
-  return fetch(url + api + '/schema',
-    {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      },
-      mode: 'cors'
-    })
+  return fetch(url + api + '/schema', {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json'
+    },
+    mode: 'cors'
+  })
     .then(parseIfJson)
-    .then((result) => {
+    .then(result => {
       if (result.response.ok) {
         return Promise.resolve(result.jsonData)
       } else {
-        let error = new Error(`Unable to read schema. Status: ${result.response.status}.`)
+        let error = new Error(
+          `Unable to read schema. Status: ${result.response.status}.`
+        )
         error.reason = result.jsonData
         return Promise.reject(error)
       }

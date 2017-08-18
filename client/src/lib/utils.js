@@ -47,7 +47,11 @@ const round = (number, precision) => {
 const extractYValues = (xyData, resultArray) => {
   for (let i = 0; i < xyData.length / 2; i++) {
     if (xyData[i * 2] > resultArray.length - 1) {
-      throw new Error(`Trying to map result value into array position ${xyData[i * 2]} which is longer than result array length ${resultArray.length}.`)
+      throw new Error(
+        `Trying to map result value into array position ${xyData[
+          i * 2
+        ]} which is longer than result array length ${resultArray.length}.`
+      )
     }
     resultArray[xyData[i * 2]] = round(xyData[i * 2 + 1] * 100, 1)
   }

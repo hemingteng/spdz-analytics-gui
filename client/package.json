@@ -11,12 +11,7 @@
     "type": "git",
     "url": "https://github.com/bristolcrypto/spdz-analytics-gui"
   },
-  "keywords": [
-    "spdz",
-    "demonstrator",
-    "analytics",
-    "uob"
-  ],
+  "keywords": ["spdz", "demonstrator", "analytics", "uob"],
   "devDependencies": {
     "eslint": "^3.19.0",
     "eslint-plugin-prettier": "^2.1.2",

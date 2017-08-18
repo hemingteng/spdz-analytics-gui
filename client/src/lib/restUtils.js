@@ -2,9 +2,11 @@
  * Utils to manage Fetch REST responses.
  */
 
-const isJson = (headers) => {
-  return headers.has('Content-Type') &&
+const isJson = headers => {
+  return (
+    headers.has('Content-Type') &&
     headers.get('Content-Type').startsWith('application/json')
+  )
 }
 
 /**
@@ -12,15 +14,14 @@ const isJson = (headers) => {
  * Unsure because errors return a JSON body with (status, message, stack (in dev)).
  * Return json and response.
  */
-const parseIfJson = (response) => {
+const parseIfJson = response => {
   if (isJson(response.headers)) {
-    return response.json()
-      .then((json) => {
-        return {
-          response: response,
-          jsonData: json
-        }
-      })
+    return response.json().then(json => {
+      return {
+        response: response,
+        jsonData: json
+      }
+    })
   } else {
     return Promise.resolve({
       response: response,

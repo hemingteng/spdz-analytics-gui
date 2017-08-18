@@ -8,7 +8,9 @@ import styled from 'styled-components'
 
 const FuncLine = styled.li`
   list-style-type: none;
-  &:hover {color: firebrick};
+  &:hover {
+    color: firebrick;
+  }
   margin-top: 2px;
   margin-bottom: 0px;
   padding-left: 4px;
@@ -16,8 +18,7 @@ const FuncLine = styled.li`
 `
 
 const SelectableFunction = props => {
-
-  const toggleSelected = (event) => {
+  const toggleSelected = event => {
     props.changeSelected(props.functionName, !props.selected)
     event.preventDefault()
     event.stopPropagation()
@@ -27,7 +28,9 @@ const SelectableFunction = props => {
     props.selected ? { background: '#d5d5d5' } : { background: '#fff' }
 
   return (
-    <FuncLine style={selectedStyle()} onClick={toggleSelected}>{props.functionName}</FuncLine>
+    <FuncLine style={selectedStyle()} onClick={toggleSelected}>
+      {props.functionName}
+    </FuncLine>
   )
 }
 

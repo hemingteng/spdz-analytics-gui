@@ -17,7 +17,12 @@ let socketList = []
  * @param {Function} setResults call with [number] to display results to user
  * @returns {Promise} resolves to array of analytic functions.
  */
-const connectAnalyticEngines = (urlList, setEngineBusy, setProgressMsg, setResults) => {
+const connectAnalyticEngines = (
+  urlList,
+  setEngineBusy,
+  setProgressMsg,
+  setResults
+) => {
   const connectOptions = {
     path: '/analytics/socket.io',
     reconnection: true,
@@ -42,10 +47,7 @@ const connectAnalyticEngines = (urlList, setEngineBusy, setProgressMsg, setResul
       goSpdzStream,
       resultStream,
       spdzErrorStream
-    ] = connectSetup(
-      connectOptions,
-      url + '/analytics'
-    )
+    ] = connectSetup(connectOptions, url + '/analytics')
     socketList.push(socket)
     statusStreamList.push(statusStream)
     runQueryStreamList.push(runQueryStream)
@@ -60,19 +62,15 @@ const connectAnalyticEngines = (urlList, setEngineBusy, setProgressMsg, setResul
   const combinedStatusStream = Bacon.combineAsArray(statusStreamList)
 
   // When an analytic engine status changes, work out combined status and make callback.
-  combinedStatusStream.onValue(
-    value => {
-      setEngineBusy(value.some(element => element.busy))
-    }
-  )
+  combinedStatusStream.onValue(value => {
+    setEngineBusy(value.some(element => element.busy))
+  })
 
   // Manage runQuery results
   manageQueryResults(runQueryStreamList, setProgressMsg)
 
   // Pass goSpdz progress messages on to caller.
-  goSpdzStreamList.map(stream =>
-    stream.onValue(value => setProgressMsg(value))
-  )
+  goSpdzStreamList.map(stream => stream.onValue(value => setProgressMsg(value)))
 
   // Check and forward analytic result
   manageAnalyticResults(resultStreamList, setProgressMsg, setResults)
@@ -95,7 +93,14 @@ const connectSetup = (connectOptions, url) => {
   const resultStream = Bacon.fromEvent(socket, 'analyticResult')
   const spdzErrorStream = Bacon.fromEvent(socket, 'spdzError')
 
-  return [socket, statusStream, runQueryStream, goSpdzStream, resultStream, spdzErrorStream]
+  return [
+    socket,
+    statusStream,
+    runQueryStream,
+    goSpdzStream,
+    resultStream,
+    spdzErrorStream
+  ]
 }
 
 const manageQueryResults = (runQueryStreamList, setProgressMsg) => {
@@ -107,45 +112,70 @@ const manageQueryResults = (runQueryStreamList, setProgressMsg) => {
   const combinedQueryResultStream = Bacon.zipAsArray(runQueryStreamList)
   combinedQueryResultStream.onValue(results => {
     if (results.every(result => result.status <= 1)) {
-      socketList.forEach((socket) => {
+      socketList.forEach(socket => {
         socket.emit('goSpdz')
       })
-      setProgressMsg({ msg: 'Requested analytic engines to start SPDZ calculation.', status: 1 })
+      setProgressMsg({
+        msg: 'Requested analytic engines to start SPDZ calculation.',
+        status: 1
+      })
     } else {
       results.forEach((result, index) => {
         if (result.status <= 1) {
           socketList[index].emit('runQueryReset')
-          setProgressMsg({ msg: `Resetting analytic engine for ${result.serverName}.`, status: 2 })
+          setProgressMsg({
+            msg: `Resetting analytic engine for ${result.serverName}.`,
+            status: 2
+          })
         }
       })
     }
   })
 }
 
-const manageAnalyticResults = (resultStreamList, setProgressMsg, setResults) => {
+const manageAnalyticResults = (
+  resultStreamList,
+  setProgressMsg,
+  setResults
+) => {
   Bacon.zipAsArray(resultStreamList).onValue(results => {
     // Check status of each result is 0 and all results are equivalent.
     if (results.every(result => result.status === 0)) {
       const listOfResults = results.map(result => result.msg)
       if (!listOfArraysEqual(listOfResults)) {
-        setProgressMsg({ msg: `SPDZ engines returned conflicting results ${JSON.stringify(listOfResults)}.`, status: 3 })
+        setProgressMsg({
+          msg: `SPDZ engines returned conflicting results ${JSON.stringify(
+            listOfResults
+          )}.`,
+          status: 3
+        })
       } else {
         setResults(results[0].msg)
-        setProgressMsg({ msg: `SPDZ results returned ${JSON.stringify(results[0].msg)}.`, status: 0 })
+        setProgressMsg({
+          msg: `SPDZ results returned ${JSON.stringify(results[0].msg)}.`,
+          status: 0
+        })
       }
     } else {
       // Send bad results back to user
-      results.filter(result => result.status > 0).forEach(result => setProgressMsg(result))
+      results
+        .filter(result => result.status > 0)
+        .forEach(result => setProgressMsg(result))
     }
   })
 }
 
 const sendDBQuery = (selectedFunctionId, ...sqlQueries) => {
   if (sqlQueries.length !== socketList.length) {
-    throw new Error(`Unable to send ${sqlQueries.length} queries to ${socketList.length} sockets.`)
+    throw new Error(
+      `Unable to send ${sqlQueries.length} queries to ${socketList.length} sockets.`
+    )
   }
   socketList.forEach((socket, index) => {
-    socket.emit('runQuery', { query: sqlQueries[index], analyticFuncId: selectedFunctionId })
+    socket.emit('runQuery', {
+      query: sqlQueries[index],
+      analyticFuncId: selectedFunctionId
+    })
   })
 
   return `Sent ${sqlQueries.length} SQL queries to analytic engines.`
