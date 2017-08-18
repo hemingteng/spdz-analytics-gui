@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import styled from 'styled-components'
@@ -13,83 +13,90 @@ const HeadingLayout = styled.div`
   padding-bottom: 10px;
 `
 
-const PercentHistogram = props => {
+class PercentHistogram extends Component {
 
-  const yLabels = { labels: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'] }
-
-  const datasets = data => {
-    const dataset = {
-      label: '% of cyber incidents by hour',
-      backgroundColor: 'rgba(255,99,132,0.2)',
-      borderColor: 'rgba(255,99,132,1)',
-      borderWidth: 1,
-      hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-      hoverBorderColor: 'rgba(255,99,132,1)'
-    }
-    dataset['data'] = data
-    const datasets = {}
-    datasets['datasets'] = [dataset]
-    return datasets
+  shouldComponentUpdate(nextProps) {
+    console.log('shouldComponentUpdate ', nextProps.data !== this.props.data, JSON.stringify(nextProps.data))
+    return (nextProps.data !== this.props.data)
   }
 
-  const dataConfig = data => Object.assign({}, yLabels, datasets(data))
+  render() {
 
-  const constChartOptions = {
-    maintainAspectRatio: false,
-    layout: {
-      padding: {
-        top: 0,
-        right: 0,
-        bottom: 40,
-        left: 0
+    const yLabels = { labels: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'] }
+
+    const datasets = data => {
+      const dataset = {
+        label: '% of cyber incidents by hour',
+        backgroundColor: 'rgba(255,99,132,0.2)',
+        borderColor: 'rgba(255,99,132,1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+        hoverBorderColor: 'rgba(255,99,132,1)'
       }
-    },
-    legend: { display: false }
-  }
-
-  const noDataChartOptions = {
-    scales: {
-      yAxes: [{
-        scaleLabel: { labelString: '%', display: true },
-        ticks: { suggestedMin: 0, suggestedMax: 100 }
-      }],
-      xAxes: [{
-        scaleLabel: { labelString: 'hour', display: true }
-      }]
+      dataset['data'] = data
+      const datasets = {}
+      datasets['datasets'] = [dataset]
+      return datasets
     }
-  }
 
-  const withDataChartOptions = {
-    scales: {
-      yAxes: [{
-        scaleLabel: { labelString: '%', display: true },
-        ticks: { suggestedMin: 0 }
-      }],
-      xAxes: [{
-        scaleLabel: { labelString: 'hour', display: true }
-      }]
+    const dataConfig = data => Object.assign({}, yLabels, datasets(data))
+
+    const constChartOptions = {
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          top: 0,
+          right: 0,
+          bottom: 40,
+          left: 0
+        }
+      },
+      legend: { display: false }
     }
-  }
 
-  const options = (data) => {
-    if (data.length === 0) {
-      return Object.assign({}, constChartOptions, noDataChartOptions)
-    } else {
-      return Object.assign({}, constChartOptions, withDataChartOptions)
+    const noDataChartOptions = {
+      scales: {
+        yAxes: [{
+          scaleLabel: { labelString: '%', display: true },
+          ticks: { suggestedMin: 0, suggestedMax: 100 }
+        }],
+        xAxes: [{
+          scaleLabel: { labelString: 'hour', display: true }
+        }]
+      }
     }
-  }
 
-  return (
-    <SizeDiv>
+    const withDataChartOptions = {
+      scales: {
+        yAxes: [{
+          scaleLabel: { labelString: '%', display: true },
+          ticks: { suggestedMin: 0 }
+        }],
+        xAxes: [{
+          scaleLabel: { labelString: 'hour', display: true }
+        }]
+      }
+    }
+
+    const options = (data) => {
+      if (data.length === 0) {
+        return Object.assign({}, constChartOptions, noDataChartOptions)
+      } else {
+        return Object.assign({}, constChartOptions, withDataChartOptions)
+      }
+    }
+
+    return <SizeDiv>
       <HeadingLayout>
-        {props.heading}
+        {this.props.heading}
       </HeadingLayout>
       <Bar
-        data={dataConfig(props.data)}
-        options={options(props.data)}
+        data={dataConfig(this.props.data)}
+        options={options(this.props.data)}
+        redraw={true}
       />
     </SizeDiv>
-  )
+  }
 }
 
 PercentHistogram.propTypes = {

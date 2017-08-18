@@ -124,8 +124,6 @@ const manageQueryResults = (runQueryStreamList, setProgressMsg) => {
 
 const manageAnalyticResults = (resultStreamList, setProgressMsg, setResults) => {
   Bacon.zipAsArray(resultStreamList).onValue(results => {
-    console.log(`SPDZ result ${JSON.stringify(results)}.`)
-
     // Check status of each result is 0 and all results are equivalent.
     if (results.every(result => result.status === 0)) {
       const listOfResults = results.map(result => result.msg)
