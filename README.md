@@ -26,3 +26,14 @@ select hour(lossDate), count(*)
   from v_cyberFraud 
  group by hour(lossDate)
 ```
+
+% sum by lookup
+
+```sql
+select ipAddress, amount 
+  from v_cyberfraud
+```
+```sql 
+select ipAddress, attributionId 
+  from v_attribution
+```

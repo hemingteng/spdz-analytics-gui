@@ -1,3 +1,5 @@
+import assert from 'assert'
+
 /**
  * Check that a list of arrays are equal.
  * That is each array has same length and each element satisfies === operator.
@@ -39,7 +41,7 @@ const round = (number, precision) => {
 
 /**
  * Format unordered x,y pairs into ordered y values ready for plotting.
- * Also rounds and converts y to integer from fixed point.
+ * Also multiplies y * 100 and rounds to 1dp.
  * 
  * @param {Array<Number>} xyData sparse array of [x0, y0, x1, y1 ....]  
  * @param {Array<Number>} resultArray array of y values ordered by x index.  
@@ -58,4 +60,42 @@ const extractYValues = (xyData, resultArray) => {
   return resultArray
 }
 
-export { extractYValues, listOfArraysEqual }
+/**
+ * Remove an xy value from the results if x is zero.
+ * 
+ * @param {Array<Number>} xyData results data containing pairs of xy values. 
+ */
+const removeZeroIndexes = xyData => {
+  assert(
+    xyData.length % 2 === 0,
+    'Expecting a results array with an even number of elements.'
+  )
+  return xyData.reduce((accumulator, value, index, origArray) => {
+    if (index % 2 === 0 && value !== 0) {
+      accumulator.push(origArray[index], origArray[index + 1])
+    }
+    return accumulator
+  }, [])
+}
+
+/**
+ * Split data into list of x values, list of y values
+ * Also multiplies y * 100 and rounds to 1dp.
+ *
+ * @param {Array<Number>} xyData results data containing pairs of xy values. 
+ * @returns {Array<Array<Number>, Array<Number>>} Two arrays, list of x and list of y
+ */
+const splitXYList = xyData => {
+  const [xData, yDataFraction] = xyData.reduce(
+    (accumulator, value, index) => {
+      accumulator[index % 2].push(value)
+      return accumulator
+    },
+    [[], []]
+  )
+  const yDataPercent = yDataFraction.map(value => round(value * 100, 1))
+
+  return [xData, yDataPercent]
+}
+
+export { extractYValues, listOfArraysEqual, removeZeroIndexes, splitXYList }

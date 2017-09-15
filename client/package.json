@@ -11,7 +11,12 @@
     "type": "git",
     "url": "https://github.com/bristolcrypto/spdz-analytics-gui"
   },
-  "keywords": ["spdz", "demonstrator", "analytics", "uob"],
+  "keywords": [
+    "spdz",
+    "demonstrator",
+    "analytics",
+    "uob"
+  ],
   "devDependencies": {
     "eslint": "^3.19.0",
     "eslint-plugin-prettier": "^2.1.2",
@@ -22,6 +27,7 @@
     "react-test-renderer": "^15.6.1"
   },
   "dependencies": {
+    "assert": "^1.4.1",
     "baconjs": "^0.7.95",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.6.0",

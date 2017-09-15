@@ -6,8 +6,14 @@ import DisplayPanel from './DisplayPanel'
 import { DisplayBox } from './BaseStyles'
 import colours from '../lib/colourScheme'
 import { connectAnalyticEngines, sendDBQuery } from '../lib/analyticSocketApi'
-import { extractYValues, listOfArraysEqual } from '../lib/utils'
+import {
+  extractYValues,
+  listOfArraysEqual,
+  removeZeroIndexes,
+  splitXYList
+} from '../lib/utils'
 import PercentHistogram from './PercentHistogram'
+import SumLookup from './SumLookup'
 import { PanelHeaderText } from './BaseStyles'
 
 const DivHeading = styled.div`
@@ -81,6 +87,9 @@ class ResultsPanel extends Component {
     if (!listOfArraysEqual([this.props.engineURLs, nextProps.engineURLs])) {
       this.connectWebSocket(nextProps.engineURLs)
     }
+    if (this.props.selectedFunctionId !== nextProps.selectedFunctionId) {
+      this.setState({ progressMessages: [], results: [] })
+    }
   }
 
   connectWebSocket(engineURLs) {
@@ -135,10 +144,9 @@ class ResultsPanel extends Component {
       const emptyArray = new Array(24)
       emptyArray.fill(0)
       const extractedResults = extractYValues(results, emptyArray)
-      console.log(
-        'about to store processed results ',
-        JSON.stringify(extractedResults)
-      )
+      this.setState({ results: extractedResults })
+    } else if (this.props.selectedFunctionId === 'sumlookup') {
+      const extractedResults = splitXYList(removeZeroIndexes(results))
       this.setState({ results: extractedResults })
     } else {
       this.setState({ results: results })
@@ -259,6 +267,13 @@ class ResultsPanel extends Component {
           </PanelHeaderText>
         )
         return <PercentHistogram heading={heading} data={results} />
+      } else if (this.props.selectedFunctionId === 'sumlookup') {
+        const heading = (
+          <PanelHeaderText>
+            Distribution of cyber loss by attribution group
+          </PanelHeaderText>
+        )
+        return <SumLookup heading={heading} data={results} />
       } else if (this.props.selectedFunctionId === 'avg') {
         if (results.length === 0) {
           return <PStatusMsg>No results to display...</PStatusMsg>
