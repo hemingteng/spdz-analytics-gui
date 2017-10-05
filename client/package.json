@@ -19,10 +19,10 @@
   ],
   "devDependencies": {
     "eslint": "^3.19.0",
-    "eslint-plugin-prettier": "^2.1.2",
+    "eslint-config-prettier": "^2.6.0",
     "eslint-plugin-promise": "^3.5.0",
     "jest-styled-components": "^4.4.0",
-    "prettier": "^1.5.2",
+    "prettier": "^1.7.4",
     "react-scripts": "1.0.10",
     "react-test-renderer": "^15.6.1"
   },

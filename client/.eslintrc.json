@@ -2,16 +2,10 @@
   "env": {
     "es6": true
   },
-  "extends": "react-app",
-  "plugins": ["promise", "prettier"],
+  "extends": ["react-app", "prettier"],
+  "plugins": ["promise"],
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2016
-  },
-  "rules": {
-    "indent": ["error", 2],
-    "linebreak-style": ["error", "unix"],
-    "quotes": ["warn", "single"],
-    "semi": ["error", "never"]
   }
 }
