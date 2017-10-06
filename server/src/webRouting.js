@@ -19,11 +19,11 @@ module.exports = app => {
     app.use(compression())
     // This is middleware, if it can resolve the request from the file system it
     // will return the file, otherwise call next to move on to routes.
-    app.use('/analytics', express.static(__dirname + '/../../client/build'))
+    app.use('/analytics', express.static(__dirname + '/../gui_build'))
     // This is router middleware, and will match all other requests to index.html, which is
     // what we want to support client side routing.
     app.get('/analyticss/*', function(req, res) {
-      res.sendFile(path.join(__dirname, '/../../client/build', 'index.html'))
+      res.sendFile(path.join(__dirname, '/../gui_build', 'index.html'))
     })
   }
 

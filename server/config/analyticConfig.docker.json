@@ -1,0 +1,7 @@
+{
+  "analyticApiRoot": "/analyticsapi",
+  "analyticList": [
+    "http://analytics-engine-0:8080",
+    "http://analytics-engine-1:8080"
+  ]
+}
