@@ -1,5 +1,5 @@
 #!/bin/bash
-# Build a docker image for production build of workshop voting GUI.
+# Build a docker image for production build of analytics GUI.
 # First builds client app and then invokes docker build.
 
 HERE=$(cd `dirname $0`; pwd)

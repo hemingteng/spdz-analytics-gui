@@ -1,7 +1,4 @@
 {
   "analyticApiRoot": "/analyticsapi",
-  "analyticList": [
-    "http://localhost:3020",
-    "http://localhost:3021"
-  ]
+  "analyticList": ["http://localhost:8081", "http://localhost:8082"]
 }

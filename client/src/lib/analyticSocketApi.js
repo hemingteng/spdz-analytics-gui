@@ -169,13 +169,16 @@ const manageAnalyticResults = (
         setProgressMsg({
           msg: `SPDZ engines returned conflicting results ${JSON.stringify(
             listOfResults
-          )}.`,
+          ).replace(/,/g, ', ')}.`,
           status: 3
         })
       } else {
         setResults(results[0].msg)
         setProgressMsg({
-          msg: `SPDZ results returned ${JSON.stringify(results[0].msg)}.`,
+          msg: `SPDZ results returned ${JSON.stringify(results[0].msg).replace(
+            /,/g,
+            ', '
+          )}.`,
           status: 0
         })
       }
