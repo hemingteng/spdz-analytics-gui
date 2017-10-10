@@ -19,11 +19,13 @@ select sum(loss), count(loss)
 ```sql 
 select hour(incidentDate), count(*)
   from v_cyberFraud 
+ where year(incidentDate) = '2017'
  group by hour(incidentDate)
 ```
 ```sql 
 select hour(lossDate), count(*)
   from v_cyberFraud 
+ where year(incidentDate) = '2017'
  group by hour(lossDate)
 ```
 
