@@ -1,7 +1,8 @@
 {
   "name": "spdz-analytics-server",
-  "version": "0.1.0",
-  "description": "\"Serve static GUI and config rest endpoints for spdz-bankers-gui\"",
+  "version": "0.1.1",
+  "description":
+    "\"Serve static GUI and config rest endpoints for spdz-bankers-gui\"",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
@@ -11,12 +12,7 @@
     "type": "git",
     "url": "https://github.com/bristolcrypto/spdz-analytics-gui"
   },
-  "keywords": [
-    "spdz",
-    "gui",
-    "server",
-    "analytics"
-  ],
+  "keywords": ["spdz", "gui", "server", "analytics"],
   "author": "Jonathan Evans",
   "license": "SEE LICENSE IN ../License.txt",
   "dependencies": {

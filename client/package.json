@@ -1,7 +1,8 @@
 {
   "name": "spdz-analytics-gui",
-  "version": "0.1.0",
-  "description": "SPDZ demonstrator GUI to allow analytic queries to be requested and calculated in SPDZ in a privacy preserving setting.",
+  "version": "0.1.1",
+  "description":
+    "SPDZ demonstrator GUI to allow analytic queries to be requested and calculated in SPDZ in a privacy preserving setting.",
   "private": true,
   "author": {
     "name": "Jonathan Evans"
@@ -11,12 +12,7 @@
     "type": "git",
     "url": "https://github.com/bristolcrypto/spdz-analytics-gui"
   },
-  "keywords": [
-    "spdz",
-    "demonstrator",
-    "analytics",
-    "uob"
-  ],
+  "keywords": ["spdz", "demonstrator", "analytics", "uob"],
   "devDependencies": {
     "eslint": "^3.19.0",
     "eslint-config-prettier": "^2.6.0",

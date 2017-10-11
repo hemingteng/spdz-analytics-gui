@@ -25,7 +25,7 @@ select hour(incidentDate), count(*)
 ```sql 
 select hour(lossDate), count(*)
   from v_cyberFraud 
- where year(incidentDate) = '2017'
+ where year(lossDate) = '2017'
  group by hour(lossDate)
 ```
 
@@ -34,6 +34,7 @@ select hour(lossDate), count(*)
 ```sql
 select ipAddress, amount 
   from v_cyberfraud
+ where year(incidentDate) = '2017'
 ```
 ```sql 
 select ipAddress, attributionId 
